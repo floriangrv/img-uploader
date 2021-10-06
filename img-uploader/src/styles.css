@@ -121,10 +121,14 @@ width: 35px;
 .img-container {
   width: 338px;
   height: 224.4px;
+  border-radius: 12px;
+  display: flex;
+
 }
 
 .img-container img {
   object-fit: cover;
+  border-radius: 12px;
   
 
 }
@@ -146,7 +150,6 @@ width: 35px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  word-break: break-all;
  
 }
 
@@ -157,4 +160,7 @@ width: 35px;
   border-radius: 8px;
   text-align: center;
   color: white;
+}
+.hidden {
+  display: none;
 }

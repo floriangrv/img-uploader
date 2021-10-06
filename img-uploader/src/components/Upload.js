@@ -45,7 +45,6 @@ const handleUpload = ({image}) => {
    (snapshot) => {
    
      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-     console.log("Upload is " + progress + "% done");
      setProgress(progress)
      // eslint-disable-next-line default-case
      switch (snapshot.state) {
@@ -63,7 +62,6 @@ const handleUpload = ({image}) => {
    () => {
     
      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-       console.log("File available at", downloadURL);
        setIsuploading(false)
        setIsuploaded(true)
        setUrl(downloadURL)
@@ -77,36 +75,31 @@ const handleUpload = ({image}) => {
        return (
          <>
            <div className="container">
-             <div className="uploader">
-               {!isuploaded && (
-                 <div
-                   className={`${isuploading ? "hidden" : ""
-                   } flex justify-center mt-10`}
-                 >
-                   <h1>Upload your image</h1>
-                   <p>File should be Jpeg, Png,...</p>
-                   <div {...getRootProps()} className="dragzone">
-                     <input {...getInputProps()} />
-                     <img src={Mountain} alt="mountain" />
-                     {isDragActive ? (
-                       <p>Drag & Drop your image here</p>
-                     ) : (
-                       <p>
-                         Drag 'n' drop some files here, or click to select files
-                       </p>
-                     )}
-                   </div>
-                   <div className="fileselection">
-                     <p>Or</p>
-                     <Button colorScheme="blue" size="sm" onClick={open}>
-                       Choose a file
-                     </Button>
-                   </div>
+             {!isuploaded && (
+               <div className={`${isuploading ? "hidden" : "uploader"} `}>
+                 <h1>Upload your image</h1>
+                 <p>File should be Jpeg, Png,...</p>
+                 <div {...getRootProps()} className="dragzone">
+                   <input {...getInputProps()} />
+                   <img src={Mountain} alt="mountain" />
+                   {isDragActive ? (
+                     <p>Drag & Drop your image here</p>
+                   ) : (
+                     <p>
+                       Drag 'n' drop some files here, or click to select files
+                     </p>
+                   )}
                  </div>
-               )}
-               {isuploading && <Loading progress={progress} />}
-               {isuploaded && <Uploaded url={url}/>}
-             </div>
+                 <div className="fileselection">
+                   <p>Or</p>
+                   <Button colorScheme="blue" size="sm" onClick={open}>
+                     Choose a file
+                   </Button>
+                 </div>
+               </div>
+             )}
+             {isuploading && <Loading progress={progress} />}
+             {isuploaded && <Uploaded url={url} />}
            </div>
          </>
        );
