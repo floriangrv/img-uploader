@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from "react-dropzone";
 import Mountain from '../images/Mountain.svg'
+import { Button } from "@chakra-ui/react";
 import { app } from '../firebase/index.js'
 import {
   getStorage,
@@ -8,10 +9,15 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+import Loading from './Loading';
+import Uploaded from './Uploaded';
 function Upload() {
 
 const [image, setImage] = useState("null");
 const [url, setUrl] = useState("null");
+const [progress, setProgress] = useState("null");
+const [isuploading, setIsuploading] = useState(false);
+const [isuploaded, setIsuploaded] = useState(false);
 const storage = getStorage();
 
 
@@ -32,6 +38,7 @@ const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
 console.log(image)
 const handleUpload = ({image}) => {
  const uploadTask = uploadBytesResumable(storageRef, image);
+ setIsuploading(true);
 
  uploadTask.on(
    "state_changed",
@@ -39,6 +46,7 @@ const handleUpload = ({image}) => {
    
      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
      console.log("Upload is " + progress + "% done");
+     setProgress(progress)
      // eslint-disable-next-line default-case
      switch (snapshot.state) {
        case "paused":
@@ -53,9 +61,11 @@ const handleUpload = ({image}) => {
   
    },
    () => {
-   
+    
      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
        console.log("File available at", downloadURL);
+       setIsuploading(false)
+       setIsuploaded(true)
        setUrl(downloadURL)
 
      });
@@ -64,28 +74,43 @@ const handleUpload = ({image}) => {
  }
 
 
-
-  return (
-    <div className="container">
-      <div className="uploader">
-        <h1>Upload your image</h1>
-        <p>File should be Jpeg, Png,...</p>
-        <div {...getRootProps()} className="dragzone">
-          <input {...getInputProps()} />
-          <img src={Mountain} alt="mountain" />
-         { 
-          isDragActive ?
-          <p>Drag & Drop your image here</p> :
-          <p>Drag 'n' drop some files here, or click to select files</p>
-          }
-        </div>
-        <div className="fileselection">
-          <p>Or</p>
-          <button onClick={open}>Choose a file</button>
-        </div>
-      </div>
-    </div>
-  );
+       return (
+         <>
+           <div className="container">
+             <div className="uploader">
+               {!isuploaded && (
+                 <div
+                   className={`${isuploading ? "hidden" : ""
+                   } flex justify-center mt-10`}
+                 >
+                   <h1>Upload your image</h1>
+                   <p>File should be Jpeg, Png,...</p>
+                   <div {...getRootProps()} className="dragzone">
+                     <input {...getInputProps()} />
+                     <img src={Mountain} alt="mountain" />
+                     {isDragActive ? (
+                       <p>Drag & Drop your image here</p>
+                     ) : (
+                       <p>
+                         Drag 'n' drop some files here, or click to select files
+                       </p>
+                     )}
+                   </div>
+                   <div className="fileselection">
+                     <p>Or</p>
+                     <Button colorScheme="blue" size="sm" onClick={open}>
+                       Choose a file
+                     </Button>
+                   </div>
+                 </div>
+               )}
+               {isuploading && <Loading progress={progress} />}
+               {isuploaded && <Uploaded url={url}/>}
+             </div>
+           </div>
+         </>
+       );
+     
 }
 
 export default Upload
