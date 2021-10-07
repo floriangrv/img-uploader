@@ -31,7 +31,7 @@
 
 ## Overview
 
-![screenshot](https://firebasestorage.googleapis.com/v0/b/img-uploader-d8fc4.appspot.com/o/images%2Fundefined?alt=media&token=2ea057ee-c7cd-47bb-9be1-b7c8806d3434)
+![screenshot]()
 
 ### Built With
 
