@@ -4,7 +4,6 @@ import {
 } from "@chakra-ui/react"
 
 function Loading(props) {
-  console.log(props)
   return (
     <div className="container">
      <div className="loading-container">
