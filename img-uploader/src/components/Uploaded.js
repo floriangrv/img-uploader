@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import check from '../images/check.png'
 
 function Uploaded(props) {
-  console.log(props)
   const [copied, setCopied] = useState(false);
   function copy() {
     const el = document.createElement("input");
