@@ -31,7 +31,7 @@
 
 ## Overview
 
-![screenshot](img-uploader/src/images/img-uploader.png)
+![screenshot](img-uploader/src/images/img-uploader-screen.png)
 
 ### Built With
 
